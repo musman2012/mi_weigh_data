@@ -3,9 +3,13 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-<!-- <head>
-    <link rel="stylesheet" type="text/css" href="../public/style.css">
-</head> -->
+<head>
+  <script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+  <script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
 <div class="container" id="app">
     <div class="row">
         <label for="start">Select dates to pick batches:</label>
@@ -48,19 +52,22 @@
             </form>
         </div>
     </div> -->
-    <div class="row">
+
+    <!-- <div class="row">
         <div class="col-md-3" v-for="result in results">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                <!-- display the city name and country  -->
                    {{result._source.Recipe}} -  {{ result._source.Batch_ID}}, {{ result._source.Line }}
                 </div>
                 <div class="panel-body">
-                <!-- display the latitude and longitude of the city  -->
                     <p>Batch Runtime:{{ result._source.Run_Time }}, Packs Produced: {{ result._source.Total_Packs }}.</p>
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <div id="batch_pie">
+        <!-- <PieChart :pieData="pieData" /> -->
     </div>
 
     <table id="batches">
@@ -176,13 +183,18 @@
 </style> -->
 
 <script>
-// create a new Vue instance
+//create a new Vue instance
+ //   import PieChart from "./components/PieChart"
+
 var app = new Vue({
     el: '#app',
     // declare the data for the component (An array that houses the results and a query that holds the current search string)
     data: {
         results: [],
         query2: '',
+        pieData: [{ color: "#0B6487", value: 30 },
+          { color: "#9D1F37", value: 40 },
+          { color: "#F6931C", value: 30 }],
         sDate:'',
         eDate: ''
     },
@@ -198,12 +210,16 @@ var app = new Vue({
                 })
         }
     },
+    // components:{
+    //     PieChart
+    // },
     // declare Vue watchers
     watch: {
         // watch for change in the query string and recall the search method
         query2: function() {
             this.search();
-            console.log(this.sDate)
+            console.log(this.sDate);
+
         }
     }
 

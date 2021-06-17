@@ -1,9 +1,32 @@
 //require the Elasticsearch librray
 const elasticsearch = require('elasticsearch');
 // instantiate an elasticsearch client
-const client = new elasticsearch.Client({
-   hosts: [ 'http://localhost:9200']
+// const client = new elasticsearch.Client({
+//    hosts: [ 'http://localhost:9200'],
+//    auth: {
+//      username: 'elastic',
+//      password: 'PAL@2021_User'
+//    }
+// });
+
+var auth = 'elastic:PAL@2021_User';
+var protocol = 'http';
+var hostUrls = [
+    'localhost'
+];
+
+var hosts = hostUrls.map(function(host) {
+    return {
+        protocol: protocol,
+        host: host,
+        auth: auth
+    };
 });
+
+const client = new elasticsearch.Client({
+  hosts: hosts
+});
+
 //require Express
 const express = require( 'express' );
 // instanciate an instance of express and hold the value in a constant called app
